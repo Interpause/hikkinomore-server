@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 
+from app.config import Config
+
 __all__ = ["app"]
 
+config = Config()  # type: ignore
 app = FastAPI()
 
 
