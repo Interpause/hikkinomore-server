@@ -49,4 +49,8 @@ STAGES = [
         prompt_name="lesson",
         has_model_reply=True,
     ),
+    StageInfo(
+        id="end",
+        content="This is the end of the quest. Now go and practice what you've learnt with your friends!",
+    ),
 ]

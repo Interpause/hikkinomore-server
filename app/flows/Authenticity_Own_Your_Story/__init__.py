@@ -51,14 +51,18 @@ STAGES = [
     ),
     StageInfo(
         id="summary",
-        # content="Thank you for your responses! Here is a summary of your answers.",
+        title="Summary",
         prompt_name="summary",
         has_model_reply=True,
     ),
     StageInfo(
         id="lesson",
-        # content="Thank you for taking the quiz!",
+        title="Lesson",
         prompt_name="lesson",
         has_model_reply=True,
+    ),
+    StageInfo(
+        id="end",
+        content="This is the end of the quest. Now go and practice what you've learnt with your friends!",
     ),
 ]
