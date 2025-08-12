@@ -37,6 +37,19 @@ STAGES = [
         prompt_name="reply_2",
         has_model_reply=True,
     ),
+        StageInfo(
+        id="question_3",
+        content="Practice reaching out to Nervy for something that is bothering you!",
+        model_content="Quiz page says: Practice reaching out to Nervy for something that is bothering you!",
+        has_user_input=True,
+    ),
+    StageInfo(
+        id="reply_3",
+        # content="The AI says:",
+        prompt_name="reply_3",
+        has_model_reply=True,
+    ),
+
     StageInfo(
         id="summary",
         # content="Thank you for your responses! Here is a summary of your answers.",
