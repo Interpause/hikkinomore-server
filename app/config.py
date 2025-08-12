@@ -2,6 +2,9 @@ from pydantic_settings import BaseSettings
 
 __all__ = ["Config", "CONFIG"]
 
+# NOTE: For which prompt is configured for what, refer to chat/prompts/__init__.py
+# or flows/<flow_name>/prompts/__init__.py
+
 
 # See: https://docs.pydantic.dev/latest/concepts/pydantic_settings
 class Config(BaseSettings, env_file=".env"):
@@ -12,6 +15,7 @@ class Config(BaseSettings, env_file=".env"):
     """
 
     gemini_api_key: str
+    gemini_model: str = "gemini-2.5-flash-lite"
 
 
 CONFIG = Config()  # type: ignore

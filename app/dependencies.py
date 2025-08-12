@@ -1,25 +1,38 @@
+"""Dependencies for the whole FastAPI app, and the lifespan context for them.
+
+Note that router specific lifespan and dependencies should be defined in the router's
+module instead.
+"""
+
 from contextlib import asynccontextmanager
 from typing import Annotated, Optional
 
 from fastapi import Depends, FastAPI, Request
 
+from app.logging_config import get_logger, setup_logging
+
+log = get_logger(__name__)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Put only heavy loading or cleanup tasks here."""
+    """Put only heavy loading or cleanup tasks for the whole app."""
     # TODO: Initialize user study logging
+    setup_logging(force_setup=True)
 
     # TODO: Below is placeholder for deps system
-    yield dict(
-        db={},
-    )
-
+    try:
+        yield dict(
+            db={},
+        )
     ### Clean up tasks go below here:
+    finally:
+        pass
 
 
-async def get_db(request: Request) -> dict:
+async def get_db(req: Request) -> dict:
     """Get database handle."""
-    return request.state.db
+    return req.state.db
 
 
 async def get_user(
