@@ -85,7 +85,8 @@ async def route_new_chat(
             status_code=401,
             detail="User not authenticated.",
         )
-    if get_prompt(agent, prompts) is None:
+    prompt = get_prompt(agent, prompts)
+    if prompt is None:
         raise HTTPException(
             status_code=400,
             detail=f"Prompt for agent '{agent}' not found.",
@@ -93,6 +94,7 @@ async def route_new_chat(
 
     chat_id = f"{user.id}.{agent}.{uuid.uuid4().hex}"
     chats[chat_id] = new_chat(chat_id, user.id, agent)
+    await chats[chat_id].chat.send_message(prompt)
 
     return NewChatResponse(chat_id=chat_id)
 
