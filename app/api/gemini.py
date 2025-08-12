@@ -38,7 +38,7 @@ def save_chat(chat_id: str, chat: ChatSession):
         history=hist,
     )
     with save_path.open("w", encoding="utf-8") as f:
-        json.dump(obj, f)
+        json.dump(obj, f, indent=2)
 
 
 def load_chat(chat_id: str):

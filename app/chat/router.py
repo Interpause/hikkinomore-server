@@ -7,7 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
 import app.chat.prompts
-from app.api.gemini import ChatSession, Content, load_chat, new_chat
+from app.api.gemini import ChatSession, Content, load_chat, new_chat, save_chat
 from app.chat.prompts import get_prompt
 from app.dependencies import User, get_user
 from app.logging_config import get_logger
@@ -127,7 +127,7 @@ async def route_send_message(
     chat_id: str,
     req: ChatRequest,
     chats: Annotated[Dict[str, ChatSession], Depends(get_chats)],
-) -> str:
+) -> List[Content]:
     """Send a message to the chat."""
     log.info(f"Sending message to chat ID {chat_id}: {req.message}")
 
@@ -139,15 +139,12 @@ async def route_send_message(
             detail=f"Chat with ID {chat_id} not found.",
         )
 
-    response = await session.chat.send_message(req.message)
-    text = response.text
-    if not text:
-        raise HTTPException(
-            status_code=500,
-            detail="Received empty response from chat service.",
-        )
+    len_before = len(session.chat.get_history(curated=True))
+    await session.chat.send_message(req.message)
+    new_msgs = session.chat.get_history(curated=True)[len_before:]
+    save_chat(chat_id, session)
 
-    return text
+    return new_msgs
 
 
 # Test route that lets me get prompt file by name.
