@@ -4,8 +4,9 @@ from pathlib import Path
 
 from google.genai import Client
 from google.genai.chats import AsyncChat
-from google.genai.types import Content
+from google.genai.types import Content, GenerateContentConfig
 
+from app.chat.prompts import get_prompt
 from app.config import CONFIG
 
 SAVE_LOCATION = "./data/"
@@ -41,7 +42,7 @@ def save_chat(chat_id: str, chat: ChatSession):
         json.dump(obj, f, indent=2)
 
 
-def load_chat(chat_id: str):
+def load_chat(chat_id: str, prompts: dict):
     """Load chat history from local storage."""
     save_path = Path(SAVE_LOCATION) / f"{chat_id}.json"
     if not save_path.exists():
@@ -54,7 +55,11 @@ def load_chat(chat_id: str):
     agent = obj["agent"]
     hist = [Content.model_validate(msg) for msg in hist]
 
-    chat = client.aio.chats.create(model=CONFIG.gemini_model, history=hist)
+    chat = client.aio.chats.create(
+        model=CONFIG.gemini_model,
+        history=hist,
+        config=GenerateContentConfig(system_instruction=get_prompt(agent, prompts)),
+    )
     return ChatSession(
         user_id=user_id,
         chat_id=chat_id,
@@ -63,9 +68,12 @@ def load_chat(chat_id: str):
     )
 
 
-def new_chat(chat_id: str, user_id: str, agent: str):
+def new_chat(chat_id: str, user_id: str, agent: str, prompts: dict):
     """Create a new chat session."""
-    chat = client.aio.chats.create(model=CONFIG.gemini_model)
+    chat = client.aio.chats.create(
+        model=CONFIG.gemini_model,
+        config=GenerateContentConfig(system_instruction=get_prompt(agent, prompts)),
+    )
     obj = ChatSession(
         user_id=user_id,
         chat_id=chat_id,

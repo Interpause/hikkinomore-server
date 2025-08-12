@@ -93,8 +93,7 @@ async def route_new_chat(
         )
 
     chat_id = f"{user.id}.{agent}.{uuid.uuid4().hex}"
-    chats[chat_id] = new_chat(chat_id, user.id, agent)
-    await chats[chat_id].chat.send_message(prompt)
+    chats[chat_id] = new_chat(chat_id, user.id, agent, prompts)
 
     return NewChatResponse(chat_id=chat_id)
 
@@ -103,11 +102,12 @@ async def route_new_chat(
 async def route_get_chat(
     chat_id: str,
     chats: Annotated[Dict[str, ChatSession], Depends(get_chats)],
+    prompts: Annotated[Dict[str, str], Depends(get_prompts)],
 ) -> ChatDataResponse:
     """Get chat history by chat ID."""
     log.info(f"Retrieving chat history for chat ID: {chat_id}")
     try:
-        session = chats.setdefault(chat_id, load_chat(chat_id))
+        session = chats.setdefault(chat_id, load_chat(chat_id, prompts))
         obj = ChatDataResponse(
             user_id=session.user_id,
             chat_id=session.chat_id,
@@ -127,12 +127,13 @@ async def route_send_message(
     chat_id: str,
     req: ChatRequest,
     chats: Annotated[Dict[str, ChatSession], Depends(get_chats)],
+    prompts: Annotated[Dict[str, str], Depends(get_prompts)],
 ) -> List[Content]:
     """Send a message to the chat."""
     log.info(f"Sending message to chat ID {chat_id}: {req.message}")
 
     try:
-        session = chats.setdefault(chat_id, load_chat(chat_id))
+        session = chats.setdefault(chat_id, load_chat(chat_id, prompts))
     except FileNotFoundError:
         raise HTTPException(
             status_code=404,

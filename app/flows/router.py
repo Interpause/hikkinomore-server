@@ -5,7 +5,7 @@ from types import ModuleType
 from typing import Annotated, Dict, List
 
 from fastapi import APIRouter, Depends, HTTPException, Request
-from google.genai.types import Content, Part
+from google.genai.types import Content, GenerateContentConfig, Part
 
 from app.api.gemini import client
 from app.config import CONFIG
@@ -80,7 +80,7 @@ def create_quiz_router(module: ModuleType) -> APIRouter:
         stage_prompt = prompts[stage.prompt_name]
 
         contents: List[Content] = [
-            Content(role="user", parts=[Part.from_text(text=stage_prompt)])
+            Content(role="user", parts=[Part.from_text(text="")])
         ]
 
         # Append in order: hardcoded model_content, user input, model replies, then empty user input.
@@ -117,7 +117,11 @@ def create_quiz_router(module: ModuleType) -> APIRouter:
         )
 
         resp = await client.aio.models.generate_content(
-            model=CONFIG.gemini_model, contents=contents
+            model=CONFIG.gemini_model,
+            contents=contents,
+            config=GenerateContentConfig(
+                system_instruction=stage_prompt,
+            ),
         )
         req.model_replies[stage.id] = resp.text or ""
 
