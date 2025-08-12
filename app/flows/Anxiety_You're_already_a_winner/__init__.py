@@ -38,6 +38,18 @@ STAGES = [
         has_model_reply=True,
     ),
     StageInfo(
+        id="question_3",
+        content="What's something that makes your journey different, but still valuable?",
+        model_content="Quiz page says: What's something that makes your journey different, but still valuable?",
+        has_user_input=True,
+    ),
+    StageInfo(
+        id="reply_2",
+        # content="The AI says:",
+        prompt_name="reply_2",
+        has_model_reply=True,
+    ),
+    StageInfo(
         id="summary",
         # content="Thank you for your responses! Here is a summary of your answers.",
         prompt_name="summary",

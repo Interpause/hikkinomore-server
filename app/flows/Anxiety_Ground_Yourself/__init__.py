@@ -38,6 +38,18 @@ STAGES = [
         has_model_reply=True,
     ),
     StageInfo(
+        id="question_3",
+        content="What will you try to do the next time you are anxious?",
+        model_content="Quiz page says: What will you try to do the next time you are anxious?",
+        has_user_input=True,
+    ),
+    StageInfo(
+        id="reply_3",
+        # content="The AI says:",
+        prompt_name="reply_3",
+        has_model_reply=True,
+    ),
+    StageInfo(
         id="summary",
         # content="Thank you for your responses! Here is a summary of your answers.",
         prompt_name="summary",
