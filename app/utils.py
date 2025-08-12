@@ -42,7 +42,7 @@ def watch_prompts_folder(
 
     # Determine the directory path
     if isinstance(module_or_path, types.ModuleType):
-        if not hasattr(module_or_path, "__file__") or module_or_path.__file__ is None:
+        if module_or_path.__file__ is None:
             raise ValueError(
                 f"Module {module_or_path} does not have a __file__ attribute"
             )
