@@ -5,18 +5,18 @@ from app.flows.structs import StageInfo
 STAGES = [
     StageInfo(
         id="intro",
-        title="Own your story!",
-        content="User talks about a real, personal experience without filtering.",
-        model_content="User talks about a real, personal experience without filtering.",
+        title="Take the lead!",
+        content="User volunteers suggests a conversation topic with Nervy.",
+        model_content="User volunteers suggests a conversation topic with Nervy.",
     ),
     StageInfo(
         id="question_1",
-        content="Can you think of a time when you really wanted to tell a story, but did not have the chance?",
+        content="Think about a time you suggested a topic in a group and it went well.",
     ),
     StageInfo(
         id="question_1.5",
-        content="How did that make you feel?",
-        model_content="Quiz page says: Think of a time when you really wanted to tell a story, but did not have the chance. How did that make you feel?",
+        content="How did it go? Were you passionate about it?",
+        model_content="Quiz page says: Think of a time when you suggested a topic in a group and it went well. How did it go? Were you passionate about it?",
         has_user_input=True,
     ),
     StageInfo(
@@ -27,8 +27,8 @@ STAGES = [
     ),
     StageInfo(
         id="question_2",
-        content="Tell the story you wanted to tell at that time",
-        model_content="Quiz page says: What was the story you wanted to tell at that time?",
+        content="What helped you feel confident bringing it up?",
+        model_content="Quiz page says: What helped you feel confident bringing it up?",
         has_user_input=True,
     ),
     StageInfo(
@@ -39,8 +39,8 @@ STAGES = [
     ),
     StageInfo(
         id="question_3",
-        content="Talk about what stopped you from telling that story ",
-        model_content="Quiz page says: What stopped you from telling that story?",
+        content="Try starting a conversation about it now!",
+        model_content="Quiz page says: Try starting a conversation about it now!",
         has_user_input=True,
     ),
     StageInfo(
