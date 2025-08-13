@@ -5,18 +5,18 @@ from app.flows.structs import StageInfo
 STAGES = [
     StageInfo(
         id="intro",
-        title="Positive Self-Talk",
-        content="User rephrases a self-critical thought as something to work on.",
-        model_content="User rephrases a self-critical thought as something to work on.",
+        title="Own your story!",
+        content="User talks about a real, personal experience without filtering.",
+        model_content="User talks about a real, personal experience without filtering.",
     ),
     StageInfo(
         id="question_1",
-        content="Do you feel like when it comes to social blunders, you are especially hard on yourself?",
+        content="Can you think of a time when you really wanted to tell a story, but did not have the chance?",
     ),
     StageInfo(
         id="question_1.5",
-        content="What's something you're hard on yourself about?",
-        model_content="Quiz page says: When it comes to social blunders, think about whether you are especially hard on yourself. What's something you're hard on yourself about?",
+        content="How did that make you feel?",
+        model_content="Quiz page says: Think of a time when you really wanted to tell a story, but did not have the chance. How did that make you feel?",
         has_user_input=True,
     ),
     StageInfo(
@@ -27,8 +27,8 @@ STAGES = [
     ),
     StageInfo(
         id="question_2",
-        content="How would a kind friend reframe that thought for you?",
-        model_content="Quiz page says: How would a kind friend reframe that thought for you?",
+        content="Tell the story you wanted to tell at that time",
+        model_content="Quiz page says: What was the story you wanted to tell at that time?",
         has_user_input=True,
     ),
     StageInfo(
@@ -39,8 +39,8 @@ STAGES = [
     ),
     StageInfo(
         id="question_3",
-        content="Now rephrase that critical self-thought into a kind one yourself!",
-        model_content="Quiz page says: Now rephrase that critical self-thought into a kind one yourself!",
+        content="Talk about what stopped you from telling that story ",
+        model_content="Quiz page says: What stopped you from telling that story?",
         has_user_input=True,
     ),
     StageInfo(

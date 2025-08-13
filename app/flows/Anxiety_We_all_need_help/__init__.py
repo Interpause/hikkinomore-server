@@ -5,18 +5,18 @@ from app.flows.structs import StageInfo
 STAGES = [
     StageInfo(
         id="intro",
-        title="You’re Already a Winner",
-        content="User notices or resists comparison to others.",
-        model_content="User notices or resists comparison to others.",
+        title="We All Need Help",
+        content="User explicitly asks the bot for help or comfort.",
+        model_content="User explicitly asks the bot for help or comfort.",
     ),
     StageInfo(
         id="question_1",
-        content="Do you often find yourself comparing yourself to others?",
+        content="Think about a time when you felt overwhelmed.",
     ),
     StageInfo(
         id="question_1.5",
-        content="What did those comparisons make you feel or believe about yourself?",
-        model_content="Quiz page says: Think about when you found yourself comparing to others. What did those comparisons make you feel or believe about yourself?",
+        content="What stopped you from asking for help right away?",
+        model_content="Quiz page says: Think about a time when you felt overwhelmed. What stopped you from asking for help right away?",
         has_user_input=True,
     ),
     StageInfo(
@@ -27,8 +27,8 @@ STAGES = [
     ),
     StageInfo(
         id="question_2",
-        content="What can you do to remind yourself that you’re not falling behind?",
-        model_content="Quiz page says: What can you do to remind yourself that you’re not falling behind?",
+        content="How did it feel once you did reach out (or imagine if you had)?",
+        model_content="Quiz page says: How did it feel once you did reach out (or imagine if you had)?",
         has_user_input=True,
     ),
     StageInfo(
@@ -37,19 +37,18 @@ STAGES = [
         prompt_name="reply_2",
         has_model_reply=True,
     ),
-        StageInfo(
+    StageInfo(
         id="question_3",
-        content="Practice reaching out to Nervy for something that is bothering you!",
-        model_content="Quiz page says: Practice reaching out to Nervy for something that is bothering you!",
+        content="What's something that makes your journey different, but still valuable?",
+        model_content="Quiz page says: What's something that makes your journey different, but still valuable?",
         has_user_input=True,
     ),
     StageInfo(
-        id="reply_3",
+        id="reply_2",
         # content="The AI says:",
-        prompt_name="reply_3",
+        prompt_name="reply_2",
         has_model_reply=True,
     ),
-
     StageInfo(
         id="summary",
         # content="Thank you for your responses! Here is a summary of your answers.",
