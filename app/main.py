@@ -1,13 +1,15 @@
 import importlib
 import pkgutil
-from typing import Annotated, Optional
 
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from starlette.exceptions import HTTPException as StarletteHTTPException
 
 import app.flows
 from app.chat.router import router as chat_router
-from app.dependencies import get_user, lifespan
+from app.dependencies import lifespan
 from app.flows.router import create_quiz_router
 from app.logging_config import get_logger
 
@@ -47,6 +49,24 @@ def discover_quiz_modules():
 
 api = FastAPI(lifespan=lifespan)
 
+# Custom exception handler for SPA routing
+@api.exception_handler(StarletteHTTPException)
+async def spa_handler(request: Request, exc: StarletteHTTPException):
+    """
+    Handle 404 errors by serving index.html for non-API routes.
+    This enables client-side routing for the React SPA.
+    """
+    if exc.status_code == 404:
+        # Check if this is an API request
+        if request.url.path.startswith("/api/"):
+            # Return the original 404 for API routes
+            return exc
+        
+        # For all other routes, serve index.html to enable SPA routing
+        return FileResponse("public/index.html")
+    
+    return exc
+
 api.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -57,7 +77,7 @@ api.add_middleware(
 
 api.include_router(
     chat_router,
-    prefix="/chat",
+    prefix="/api/chat",
     tags=["chat"],
 )
 
@@ -66,16 +86,10 @@ quiz_modules = discover_quiz_modules()
 for module_name, module in quiz_modules:
     api.include_router(
         create_quiz_router(module),
-        prefix=f"/{module_name}",
+        prefix=f"/api/{module_name}",
         tags=[module_name],
     )
-    log.info(f"Registered quiz router for {module_name} at /{module_name}")
+    log.info(f"Registered quiz router for {module_name} at /api/{module_name}")
 
-
-@api.get("/")
-async def root(user: Annotated[Optional[dict], Depends(get_user)]) -> str:
-    """Route that returns hello world."""
-    if user is None:
-        return "Hello world!"
-    else:
-        return f"Hello {user['name']}!"
+# Must be mounted last.
+api.mount("/", StaticFiles(directory="public", html=True))
