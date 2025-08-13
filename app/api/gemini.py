@@ -4,9 +4,9 @@ from pathlib import Path
 
 from google.genai import Client
 from google.genai.chats import AsyncChat
-from google.genai.types import Content, GenerateContentConfig
+from google.genai.types import Content, GenerateContentConfig, Part
 
-from app.chat.prompts import get_prompt
+from app.chat.prompts import get_initial_message, get_prompt
 from app.config import CONFIG
 
 SAVE_LOCATION = "./data/"
@@ -72,6 +72,11 @@ def new_chat(chat_id: str, user_id: str, agent: str, prompts: dict):
     """Create a new chat session."""
     chat = client.aio.chats.create(
         model=CONFIG.gemini_model,
+        history=[
+            Content(
+                role="model", parts=[Part.from_text(text=get_initial_message(agent))]
+            )
+        ],
         config=GenerateContentConfig(system_instruction=get_prompt(agent, prompts)),
     )
     obj = ChatSession(
